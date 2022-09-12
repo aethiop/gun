@@ -1,16 +1,15 @@
 <p id="readme"><a href="https://gun.eco/"><img width="40%" src="https://cldup.com/TEy9yGh45l.svg"/></a><img width="50%" align="right" vspace="25" src="https://gun.eco/see/demo.gif"/></p>
 
-[![](https://data.jsdelivr.com/v1/package/npm/gun/badge?style=rounded)](https://www.jsdelivr.com/package/npm/gun)
+[![](https://data.jsdelivr.com/v1/package/gh/amark/gun/badge?style=rounded)](https://data.jsdelivr.com/v1/package/gh/amark/gun/stats)
 ![Build](https://github.com/amark/gun/actions/workflows/ci.yml/badge.svg)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Famark%2Fgun.svg?size=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Famark%2Fgun?ref=badge_shield)
 [![Gitter](https://img.shields.io/gitter/room/amark/gun.js.svg)](http://chat.gun.eco)
 
 **GUN** is an [ecosystem](https://gun.eco/docs/Ecosystem) of **tools** that let you build [community run](https://www.nbcnews.com/tech/tech-news/these-technologists-think-internet-broken-so-they-re-building-another-n1030136) and [encrypted applications](https://gun.eco/docs/Cartoon-Cryptography) - like an Open Source Firebase or a Decentralized Dropbox.
 
-The [Internet Archive](https://news.ycombinator.com/item?id=17685682), [HackerNoon](https://www.coindesk.com/hacker-noon-is-storing-content-on-a-blockchain-after-ditching-medium), and [100s of other apps](https://github.com/amark/gun/wiki/awesome-gun) run GUN in-production. GUN is also part of [Twitter's Bluesky](https://blueskycommunity.net/) initiative!
+The [Internet Archive](https://news.ycombinator.com/item?id=17685682) and [100s of other apps](https://github.com/amark/gun/wiki/awesome-gun) run GUN in-production. GUN is also part of [Twitter's Bluesky](https://blueskycommunity.net/) initiative!
 
  + Multiplayer by default with realtime p2p state synchronization!
- + Graph data let's you use key/value, tables, documents, videos, & more!
+ + Graph data lets you use key/value, tables, documents, videos, & more!
  + Local-first, offline, and decentralized with end-to-end encryption.
 
 Decentralized alternatives to [Zoom](https://www.zdnet.com/article/era-hatches-meething-an-open-source-browser-based-video-conferencing-system/), [Reddit](https://notabug.io/t/whatever/comments/36588a16b9008da4e3f15663c2225e949eca4a15/gpu-bot-test), [Instagram](https://iris.to/), [Slack](https://iris.to/), [YouTube](https://d.tube/), [Stripe](https://twitter.com/marknadal/status/1422717427427647489), [Wikipedia](https://news.ycombinator.com/item?id=17685682), Facebook [Horizon](https://twitter.com/marknadal/status/1424476179189305347) and more have already pushed terabytes of daily P2P traffic on GUN. We are a [friendly community](http://chat.gun.eco/) creating a [free fun future for freedom](https://youtu.be/1HJdrBk3BlE):
@@ -76,7 +75,7 @@ gun.get('mark').put(mark);
 
 // access the data as if it is a document.
 gun.get('mark').get('boss').get('name').once(function(data, key){
-  // `val` grabs the data once, no subscriptions.
+  // `once` grabs the data once, no subscriptions.
   console.log("Mark's boss is", data);
 });
 
@@ -116,14 +115,19 @@ On that note, let's get some official shout outs covered first:
 
 <p align="center">
 Thanks to:
- 
-<table><tr>
+
+<table>
+<tr>
 <td vlign="center"><a href="https://mozilla.org/builders"><img height="100" src="https://user-images.githubusercontent.com/1423657/81992335-85346480-9643-11ea-8754-8275e98e06bc.png"></a></td>
 <td vlign="center"><a href="http://unstoppabledomains.com/"><img src="https://gun.eco/img/unstoppable.png"></a></td>
-<td vlign="center"><a href="https://www.ajar.org/"><img src="https://www.ajar.org/logo.png" width="200"></a></td>
-<td vlign="center"><a href="https://ghostdrive.com/"><img src="https://gun.eco/img/ghostdrive.png" width="250"></a></td>
 <td vlign="center"><a href="https://mask.io/"><img src="https://dimensiondev.github.io/Mask-VI/assets/Logo/MB--Logo--CombH-Circle--Blue.svg" width="250"></a></td>
-</tr></table>
+</tr>
+<tr>
+<td vlign="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.ajar.org/"><img src="https://www.ajar.org/logo.png" height="120"></a></td>
+<td vlign="center"><a href="https://wallie.io/"><img src="https://raw.githubusercontent.com/gundb/gun-site/master/img/wallie.png" width="250"></a></td>
+<td vlign="center">&nbsp;&nbsp;<a href="https://ghostdrive.com/"><img src="https://gun.eco/img/ghostdrive.png" height="120"></a></td>
+</tr>
+</table>
 
 <a href="https://github.com/robertheessels">Robert Heessels</a>,
 <a href="http://qxip.net/">Lorenzo Mangani</a>,
@@ -147,7 +151,11 @@ Thanks to:
 <a href="https://github.com/ajartille">Aaron Artille</a>,
 <a href="https://github.com/timjrobinson">Tim Robinson</a>,
 <a href="https://github.com/hibas123">Fabian Stamm</a>,
-<a href="https://twitter.com/mikestaub">Mike Staub</a>
+<a href="https://twitter.com/mikestaub">Mike Staub</a>,
+<a href="https://hunterowens.com/">Hunter Owens</a>,
+<a href="https://github.com/JacobMillner">Jacob Millner</a>,
+<a href="https://github.com/b-lack">Gerrit Balindt</a>,
+<a href="https://github.com/gabriellemon">Gabriel Lemon</a>
 </p>
 
  - Join others in sponsoring code: https://www.patreon.com/gunDB !

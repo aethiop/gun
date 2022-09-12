@@ -331,6 +331,15 @@ describe('SEA', function(){
       })
     })
 
+    it('logout, login via {pub}', function(done){
+      var pub = user.is.pub;
+      user.leave();
+      user.auth({pub:pub}, 'testing123', function(ack){
+        expect(ack.err).to.not.be.ok();
+        done();
+      })
+    })
+
     it('save data', function(done){
       user.get('a').get('b').put(0, function(ack){
         expect(ack.err).to.not.be.ok();
@@ -700,7 +709,7 @@ describe('SEA', function(){
       })
     }())})
 
-    it.skip('Certify: Advanced - Block', function(done){(async function(){
+    it('Certify: Advanced - Block', function(done){(async function(){
       var alice = await SEA.pair()
       var dave = await SEA.pair()
       var bob = await SEA.pair()
@@ -738,7 +747,31 @@ describe('SEA', function(){
             }, { opt: { cert } })
       }
     }())})
+
+  });
+
+  describe.skip('Frozen', function () {
+    it('Across spaces', function(done){
+      var gun = Gun();
+      var user = gun.user();
+
+      user.create('alice/as', 'password');
+      
+      gun.on('auth', async function(){
+
+        user.put({name: "Alice", country: "USA"});
+
+        var data = "hello world";
+        var hash = await SEA.work(data, null, null, {name: "SHA-256"});
+        gun.get('#users').get(hash).put(data);
+
+        console.log(1);
+        gun.get('#users').map()/*.get('country')*/.on(data => console.log(data));
+
+      });
+    });
   });
 })
 
 }());
+

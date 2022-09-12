@@ -475,7 +475,7 @@
     }});
 
     module.exports = SEA.verify;
-    // legacy & ossl leak mitigation:
+    // legacy & ossl memory leak mitigation:
 
     var knownKeys = {};
     var keyForPair = SEA.opt.slow_leak = pair => {
@@ -964,7 +964,7 @@
     User.prototype.auth = function(...args){ // TODO: this PR with arguments need to be cleaned up / refactored.
       var pair = typeof args[0] === 'object' && (args[0].pub || args[0].epub) ? args[0] : typeof args[1] === 'object' && (args[1].pub || args[1].epub) ? args[1] : null;
       var alias = !pair && typeof args[0] === 'string' ? args[0] : null;
-      var pass = alias && typeof args[1] === 'string' ? args[1] : null;
+      var pass = (alias || (pair && !(pair.priv && pair.epriv))) && typeof args[1] === 'string' ? args[1] : null;
       var cb = args.filter(arg => typeof arg === 'function')[0] || null; // cb now can stand anywhere, after alias/pass or pair
       var opt = args && args.length > 1 && typeof args[args.length-1] === 'object' ? args[args.length-1] : {}; // opt is always the last parameter which typeof === 'object' and stands after cb
       
@@ -976,7 +976,7 @@
       }
       cat.ing = true;
       
-      var act = {}, u;
+      var act = {}, u, tries = 9;
       act.a = function(data){
         if(!data){ return act.b() }
         if(!data.pub){
@@ -990,6 +990,10 @@
         var get = (act.list = (act.list||[]).concat(list||[])).shift();
         if(u === get){
           if(act.name){ return act.err('Your user account is not published for dApps to access, please consider syncing it online, or allowing local access by adding your device as a peer.') }
+          if(alias && tries--){
+            root.get('~@'+alias).once(act.a);
+            return;
+          }
           return act.err('Wrong user or password.') 
         }
         root.get(get).once(act.a);
@@ -1048,6 +1052,17 @@
           Gun.log("Your 'auth' callback crashed with:", e);
         }
       }
+      act.h = function(data){
+        if(!data){ return act.b() }
+        alias = data.alias
+        if(!alias)
+          alias = data.alias = "~" + pair.pub        
+        if(!data.auth){
+          return act.g(pair);
+        }
+        pair = null;
+        act.c((act.data = data).auth);
+      }
       act.z = function(){
         // password update so encrypt private key using new pwd + salt
         act.salt = String.random(64); // pseudo-random
@@ -1084,7 +1099,10 @@
         act.b(tmp);
       }
       if(pair){
-        act.g(pair);
+        if(pair.priv && pair.epriv)
+          act.g(pair);
+        else
+          root.get('~'+pair.pub).once(act.h);
       } else
       if(alias){
         root.get('~@'+alias).once(act.a);
@@ -1335,9 +1353,16 @@
       check.any(eve, msg, val, key, soul, at, no, at.user||''); return;
       eve.to.next(msg); // not handled
     }
-    check.hash = function(eve, msg, val, key, soul, at, no){
+    check.hash = function(eve, msg, val, key, soul, at, no){ // mark unbuilt @i001962 's epic hex contrib!
       SEA.work(val, null, function(data){
+        function hexToBase64(hexStr) {
+          let base64 = "";
+          for(let i = 0; i < hexStr.length; i++) {
+            base64 += !(i - 1 & 1) ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16)) : ""}
+          return btoa(base64);}  
         if(data && data === key.split('#').slice(-1)[0]){ return eve.to.next(msg) }
+          else if (data && data === hexToBase64(key.split('#').slice(-1)[0])){ 
+          return eve.to.next(msg) }
         no("Data hash not same as hash!");
       }, {name: 'SHA-256'});
     }
@@ -1373,7 +1398,7 @@
                   if (data.wb && (typeof data.wb === 'string' || ((data.wb || {})['#']))) { // "data.wb" = path to the WRITE block
                     var root = eve.as.root.$.back(-1)
                     if (typeof data.wb === 'string' && '~' !== data.wb.slice(0, 1)) root = root.get('~' + pub)
-                    return root.get(data.wb).get(certificant).once(value => {
+                    return root.get(data.wb).get(certificant).once(value => { // TODO: INTENT TO DEPRECATE.
                       if (value && (value === 1 || value === true)) return no(`Certificant ${certificant} blocked.`)
                       return cb(data)
                     })
