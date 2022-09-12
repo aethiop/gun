@@ -19,7 +19,14 @@
 		config.server = require('http').createServer(Gun.serve(__dirname));
 	}
 
-	var gun = Gun({web: config.server.listen(config.port), peers: config.peers});
+	var gun = Gun({
+		web: config.server.listen(config.port),
+		peers: config.peers,
+		s3: {
+			key: process.env.S3_ID,
+			secret: process.env.S3_KEY,
+			bucket: process.env.S3_BUCKET
+	}});
 
 	console.log('Relay peer started on port ' + config.port + ' with /gun');
 
